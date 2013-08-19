@@ -5,16 +5,21 @@ var DB_ADDRESS = 'mongodb://localhost/test';
 /**
  * Module dependencies.
  */
-var routes = require('./routes');
+// Models
+require('./models/user');
+require('./models/item');
+
+// Routes
 var items = require('./routes/items');
 var session = require('./routes/session');
+
+// Modules
 var mongoose = require('mongoose');
 var passport = require('passport');
 var express = require('express');
 var http = require('http');
 var path = require('path');
 var mongoStore = require('connect-mongo')(express)
-var User = require('./models/user.js');
 var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
@@ -28,7 +33,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 // Session Cookies
 app.use(express.cookieParser(COOKIE_HASH));
@@ -47,6 +52,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Config Passport
+var User = mongoose.model('User');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

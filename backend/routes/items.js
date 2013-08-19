@@ -1,4 +1,6 @@
-var Item = require('../models/item').Item;
+var mongoose = require('mongoose');
+var Item = mongoose.model('Item');
+//var Item = require('../models/item').Item;
 
 exports.postItems = function(req, res) {
     var itemInst = new Item(req.body);

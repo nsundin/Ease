@@ -1,4 +1,5 @@
-var User = require('../models/user.js');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 exports.postLogin = function(req, res) {
     res.send('Ok');
