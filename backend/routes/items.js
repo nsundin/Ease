@@ -1,30 +1,22 @@
-var mongoose = require('mongoose');
-
-var itemSchema = new mongoose.Schema({
-    sku: Number,
-    name: String,
-    quantity: Number,
-    purchasePrice: Number,
-    salesPrice: Number});
-
-var Item = mongoose.model('Item', itemSchema);
+var Item = require('../models/item').Item;
 
 exports.postItems = function(req, res) {
     var itemInst = new Item(req.body);
     console.log(req);
     itemInst.save(function(err, item) {
-        console.log(item);
+        //console.log('Saving:\n'+item);
         if (err) {
-            console.log("Error!")
-        }; //Todo handle error
-        console.log("Saved Item.");
+            console.log('Error saving Item.');
+        };
     });
-    res.send("GOT IT!");
+    res.send('Ok');
 };
 
-exports.items = function(req, res) {
+exports.getItems = function(req, res) {
     Item.find(function(err, items) {
-        if (err) {}; //handle error
+        if (err) {
+            console.log('Error getting Item')
+        };
         res.send(items)
     });
 };
