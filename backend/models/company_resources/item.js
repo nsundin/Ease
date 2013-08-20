@@ -5,7 +5,7 @@ var itemSchema = new mongoose.Schema({
 	name: String,
 	quantity: Number,
 	purchasePrice: Number,
-	salesPrice: Number});
+	salesPrice: Number
+});
 
-exports.Item = mongoose.model('Item', itemSchema);
-
+exports.itemSchema = itemSchema;
