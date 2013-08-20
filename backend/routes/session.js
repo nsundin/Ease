@@ -27,11 +27,11 @@ exports.postRegister = function(req, res) {
 };
 
 exports.auth = function(req, res, next) {
-	if (req.isAuthenticated()) {
+	if (req.isAuthenticated() && (req.user.username != req.params.company)) {
 		next();
 	}
 	else {
-		res.send('Error');
+		res.status(403).send('Error: Not Authenticated');
 	}
 };
 
