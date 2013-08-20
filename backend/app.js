@@ -7,11 +7,10 @@ var DB_ADDRESS = 'mongodb://localhost/test';
  */
 // Models
 require('./models/user');
-require('./models/company_resources/item');
 require('./models/company');
 
 // Routes
-//var items = require('./routes/items');
+require('./routes/routes'); //example: "(app, config, passport)
 var session = require('./routes/session');
 var company = require('./routes/company');
 
@@ -69,13 +68,6 @@ if ('development' == app.get('env')) {
 // add stuff to get /company/location/inventory/item
 // possibly move to another file
 
-//app.get('/items', session.auth, items.getItems);
-//app.post('/items', session.auth, items.postItems);
-app.post('/logout', session.postLogout);
-app.post('/login', passport.authenticate('local'), session.postLogin);
-app.post('/register', session.postRegister);
-app.get('/company', company.getCompanies);
-app.post('/company', company.postCompanies);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
