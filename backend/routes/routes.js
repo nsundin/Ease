@@ -13,6 +13,7 @@ module.exports = function(app, passport) {
 	app.post('/register', session.postRegister);
 	app.get('/data/:company', company.get); //not for production
 	app.post('/data/:company', company.post);
+	app.get('/data/:company/:location', location.get);
 	app.post('/data/:company/:location', location.post);
 	//app.get('/data/:company/:location/:inventory', inventory.get);
 };

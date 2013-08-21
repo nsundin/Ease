@@ -19,10 +19,22 @@ exports.post = function(req, res) {
 };
 
 exports.get = function(req, res) {
-	Location.find({name: req.params.location}, function(err, locations) {
+	Company.find({name: req.params.company}, function(err, company) {
 		if (err) {
-			console.log('Error getting Location', err)
+			console.log('Error getting Company', err);
+			return res.status(404).send('[]');
 		}
-		res.send(locations)
+		else {
+			console.log('company', company[0].locations);
+			var location_object = company[0].locations.toObject();
+			for (loc_index in location_object) {
+				console.log(location_object[loc_index]);
+				if (location_object[loc_index].name == req.params.location) {
+					return res.send(location_object[loc_index]);
+				}
+			}
+			console.log('Error getting Company');
+			return res.status(404).send('[]');
+		}
 	});
 };
