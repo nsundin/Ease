@@ -12,16 +12,23 @@ exports.post = function(req, res) {
 			console.log('Saving:\n'+company);
 		}
 	});
-	res.send('Ok');
+	res.send('ok');
 };
 
-exports.get = function(req, res) {
-	//var username = req.user.username; 
-	Company.find({name: req.params.company}, function(err, companies) {
+exports.get = function(req, res, next) {
+	Company.findOne({name: req.params.company}, function(err, company) {
 		if (err) {
-			console.log('Error getting Company', err)
+			console.log('Error getting Company', err);
+			res.send('db error');
+		}	
+		else {
+			if (company) {
+				res.locals.content = company;
+				next();
+			}
+			else {
+				res.status(404).send('company not found');
+			}
 		}
-		res.send(companies)
 	});
 };
-

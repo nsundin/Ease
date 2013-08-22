@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+//model
 var Company = mongoose.model('Company');
 
 exports.post = function(req, res) {
-	Company.findOne({name: req.params.company}, function(err, company) {
+		var company = res.locals.content;
 		company.locations.push({name: req.params.location});
 		console.log(req);
 		company.save(function(err, location) {
@@ -14,27 +15,19 @@ exports.post = function(req, res) {
 				console.log('Saving:\n'+location);
 			}
 		});
-	});
-	res.send('Ok');
+	res.send('ok');
 };
 
-exports.get = function(req, res) {
-	Company.find({name: req.params.company}, function(err, company) {
-		if (err) {
-			console.log('Error getting Company', err);
-			return res.status(404).send('[]');
-		}
-		else {
-			console.log('company', company[0].locations);
-			var location_object = company[0].locations.toObject();
-			for (loc_index in location_object) {
-				console.log(location_object[loc_index]);
-				if (location_object[loc_index].name == req.params.location) {
-					return res.send(location_object[loc_index]);
-				}
+//company.get should be called before this
+exports.get = function(req, res, next) {
+		//optimize by not evaluating entire thing to JSON
+		var location_object = res.locals.content.locations.toObject();
+		//do linear search for location
+		for (loc_index in location_object) {
+			if (location_object[loc_index].name == req.params.location) {
+				res.locals.content = location_object[loc_index];
+				return next();
 			}
-			console.log('Error getting Company');
-			return res.status(404).send('[]');
 		}
-	});
+		res.status(404).send('location not found');
 };
