@@ -6,4 +6,4 @@ var inventorySchema = new mongoose.Schema({
   name: String
 });
 
-exports.inventorySchema = inventorySchema;
+mongoose.model('Inventory', inventorySchema);

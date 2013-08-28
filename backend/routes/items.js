@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
-var  = require('../models/item').Item;
 
 exports.create = function(req, res) {
-	var username = req.user.username; 
-	var itemInst = new Item(req.body);
-	console.log(req);
-	itemInst.save(function(err, item) { //does not work
-		//console.log('Saving:\n'+item);
-		if (err) {
-			console.log('Error saving Item.');
-		};
+	req.body.name = req.params.item;
+	res.locals.content.inventory.push(req.body);
+	company.save(function(err, location) {
+	  if (err) {
+			console.log('Error saving Location.', err);
+		}
+		else {
+			console.log('Saving:\n', location);
+ 		}
 	});
-	res.send('Ok');
+	res.send('ok');
 };

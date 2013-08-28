@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Company = mongoose.model('Company');
 
 exports.postLogin = function(req, res) {
 	res.send('Ok');
@@ -12,8 +13,9 @@ exports.postLogout = function(req, res) {
 
 exports.postRegister = function(req, res) {
 	//verify password with confirm on client side
+	var new_username = req.body.username;
 	userInstance = new User({
-		username: req.body.username
+		username: new_username
 	});
 	User.register(userInstance, req.body.password, function(err, user) {
 		if (err) {
@@ -24,14 +26,15 @@ exports.postRegister = function(req, res) {
 			res.redirect('/');
 		}
 	});
-};
-
-exports.auth = function(req, res, next) {
-	if (req.isAuthenticated() && (req.user.username != req.params.company)) {
-		next();
-	}
-	else {
-		res.status(403).send('Error: Not Authenticated');
-	}
+	//for now make a company the name of the user
+	var companyInst = new Company({name: new_username});
+	companyInst.save(function(err, company) {
+		if (err) {
+			console.log('Error saving Company.', err);
+		}
+		else {
+	  	console.log('Saving:\n'+company);
+  	}
+	});
 };
 
