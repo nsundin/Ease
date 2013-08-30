@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var alarmSchema = require('../alarm').alarmSchema;
 
 var itemSchema = new mongoose.Schema({
 	sku: Number,
@@ -7,7 +6,10 @@ var itemSchema = new mongoose.Schema({
 	quantity: Number,
 	purchasePrice: Number,
 	salesPrice: Number,
-	alarm: [alarmSchema]
+	hasAlarm: Boolean,
+	minQuantity: Number,
+	isDanger: Boolean
+
 
 });
 

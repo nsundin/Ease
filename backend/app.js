@@ -10,7 +10,7 @@ require('./models/user');
 require('./models/company');
 
 // Routes
-var session = require('./routes/session');
+var session = require('./controllers/session');
 
 // Modules
 var mongoose = require('mongoose');
@@ -66,7 +66,7 @@ if ('development' == app.get('env')) {
 // add stuff to get /company/location/inventory/item
 // possibly move to another file
 
-require('./routes/routes')(app, passport);
+require('./routes')(app, passport);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
