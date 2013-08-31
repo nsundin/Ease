@@ -19,9 +19,8 @@ var http = require('http');
 var path = require('path');
 var mongoStore = require('connect-mongo')(express)
 var LocalStrategy = require('passport-local').Strategy;
-require('./routes')(app, passport);
-
 var app = express();
+
 
 //Connect to Mongo
 var mongoUri = process.env.MONGOLAB_URI ||
@@ -69,6 +68,8 @@ if ('development' == app.get('env')) {
 // add stuff to get /company/location/inventory/item
 // possibly move to another file
 
+//this must be here or usernames don't work
+require('./routes')(app, passport);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

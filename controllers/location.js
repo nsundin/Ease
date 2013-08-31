@@ -54,6 +54,7 @@ exports.get = function(req, res, next) {
 
 exports.getInventory = function(req, res, next) {
 	var location = res.locals.content;
+
 	Inventory.findOne({_id: location.inventory}, function (err, inventory) {
 		if (err) {
 				console.log('Error finding inventory');
@@ -72,3 +73,74 @@ exports.getInventory = function(req, res, next) {
 	});
 	
 };
+
+exports.delete = function (req, res, next) {
+	console.log('not implemented');
+};
+
+exports.createItem = function (req, res, next) {
+	var inventory = res.locals.content;
+	console.log(inventory);
+	//check for duplicate sku
+	var items = inventory.items.toObject();
+	for (i in items) {
+		if(items[i].sku == req.params.itemSku) {
+			console.log('duplicate found');
+			return res.status(406).send('Duplicate');
+		}
+	}
+	//update sku
+	req.body.sku = req.params.itemSku;
+  inventory.items.push(req.body);
+	console.log(inventory);
+
+	inventory.save(function (err, inventory) {
+		if (err) {
+			console.log('error occurred', err);
+			res.status(406).send();
+		}
+		else {
+			console.log('saved: \n' + inventory);
+			res.send('Saving complete');
+		}
+	});
+
+};
+exports.deleteItem = function (req, res, next) {
+
+
+
+
+
+
+
+
+
+
+
+
+	var inventory = res.locals.content;
+	var sku = req.params.itemSku;
+	var items = inventory.items.toObject();
+	for (i in items)  {
+		if (sku == items[i].sku) {
+			delete inventory.items[i]; //makes inventory.items[i] undefined
+			inventory.save(function (err, item) {
+				if (err) {
+					console.log('error occurred', err);
+					res.status(406).send();
+				}
+				else {
+					console.log('deleted: \n' + item);
+					res.send('Deleted item');
+				}
+			});
+			return;
+		}
+	}
+	res.status(404).send('item not found');
+
+}
+
+
+
