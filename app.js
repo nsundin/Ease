@@ -1,6 +1,5 @@
 //Application Variables
 var COOKIE_HASH = '542b2b53a44a9fdc3cedc1fc4d480e18';
-var DB_ADDRESS = 'mongodb://localhost/test';
 
 /**
  * Module dependencies.
@@ -24,7 +23,10 @@ var LocalStrategy = require('passport-local').Strategy;
 var app = express();
 
 //Connect to Mongo
-mongoose.connect(DB_ADDRESS);
+var mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/test'; 
+mongoose.connect(mongoUri);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
