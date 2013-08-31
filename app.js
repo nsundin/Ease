@@ -1,6 +1,5 @@
 //Application Variables
 var COOKIE_HASH = '542b2b53a44a9fdc3cedc1fc4d480e18';
-var DB_ADDRESS = 'mongodb://localhost/test';
 
 /**
  * Module dependencies.
@@ -20,11 +19,15 @@ var http = require('http');
 var path = require('path');
 var mongoStore = require('connect-mongo')(express)
 var LocalStrategy = require('passport-local').Strategy;
+require('./routes')(app, passport);
 
 var app = express();
 
 //Connect to Mongo
-mongoose.connect(DB_ADDRESS);
+var mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/test';
+mongoose.connect(mongoUri);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -32,14 +35,14 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '/static')));
 
 // Session Cookies
 app.use(express.cookieParser(COOKIE_HASH));
 
 app.use(express.session({
     store : new mongoStore({
-      url : DB_ADDRESS
+      url : mongoUri
     }),
     maxAge: 300000,
     secret: COOKIE_HASH
@@ -66,7 +69,6 @@ if ('development' == app.get('env')) {
 // add stuff to get /company/location/inventory/item
 // possibly move to another file
 
-require('./routes')(app, passport);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
