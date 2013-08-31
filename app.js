@@ -34,7 +34,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '/static')));
 
 // Session Cookies
 app.use(express.cookieParser(COOKIE_HASH));
