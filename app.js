@@ -41,7 +41,7 @@ app.use(express.cookieParser(COOKIE_HASH));
 
 app.use(express.session({
     store : new mongoStore({
-      url : DB_ADDRESS
+      url : mongoUri
     }),
     maxAge: 300000,
     secret: COOKIE_HASH
