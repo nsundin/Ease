@@ -40,5 +40,5 @@ module.exports = function(app, passport) {
 																			//it should be inventory.deleteItem,
 																			//we know
 	app.delete('/data/:company/:location', company.get,
-																			location.delete);
+																			company.deleteLocation);
 };

@@ -74,9 +74,6 @@ exports.getInventory = function(req, res, next) {
 	
 };
 
-exports.delete = function (req, res, next) {
-	console.log('not implemented');
-};
 
 exports.createItem = function (req, res, next) {
 	var inventory = res.locals.content;
@@ -107,39 +104,29 @@ exports.createItem = function (req, res, next) {
 
 };
 exports.deleteItem = function (req, res, next) {
-
-
-
-
-
-
-
-
-
-
-
-
 	var inventory = res.locals.content;
-	var sku = req.params.itemSku;
+/*	for (f in inventory.items) {
+		console.log(f);
+	}*/
 	var items = inventory.items.toObject();
-	for (i in items)  {
-		if (sku == items[i].sku) {
-			delete inventory.items[i]; //makes inventory.items[i] undefined
-			inventory.save(function (err, item) {
-				if (err) {
-					console.log('error occurred', err);
-					res.status(406).send();
-				}
-				else {
-					console.log('deleted: \n' + item);
-					res.send('Deleted item');
-				}
-			});
-			return;
+	for (i in items) {
+		if (inventory.items[i].sku == req.params.itemSku) {
+			var item = inventory.items[i];
+			console.log('item found: ', item);
 		}
 	}
-	res.status(404).send('item not found');
-
+ 	inventory.items.remove(item);
+	res.send(inventory.items);
+	inventory.save(function (err, inventory) {
+		if (err) {
+			console.log('error occurred', err);
+			res.status(406).send();
+		}
+		else {
+			console.log('saved: \n' + inventory);
+			res.send('Saving complete');
+		}
+	});
 }
 
 

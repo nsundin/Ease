@@ -23,3 +23,26 @@ exports.get = function(req, res, next) {
 		}
 	});
 };
+
+exports.deleteLocation = function (req, res, next) {
+	var company = res.locals.content;
+	var locations = company.locations.toObject();
+	for (i in locations) {
+		if (company.locations[i].name == req.params.location) {
+			var location = company.locations[i];
+			console.log('location found: ', location);
+		}
+	}
+ 	company.locations.remove(location);
+	res.send(company.locations);
+	company.save(function (err, company) {
+		if (err) {
+			console.log('error occurred', err);
+			res.status(406).send();
+		}
+		else {
+			console.log('saved: \n' + company);
+			res.send('Saving complete');
+		}
+	});
+};
