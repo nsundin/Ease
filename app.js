@@ -28,6 +28,15 @@ var mongoUri = process.env.MONGOLAB_URI ||
   'mongodb://localhost/test';
 mongoose.connect(mongoUri);
 
+//CORS middleware
+var allowCrossDomain = function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', config.allowedDomains);
+	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+	next();
+}
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.use(express.favicon());
