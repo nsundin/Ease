@@ -3,7 +3,7 @@ var User = mongoose.model('User');
 var Company = mongoose.model('Company');
 
 exports.postLogin = function(req, res) {
-	res.send('Ok');
+	res.send('You are now logged in');
 };
 
 exports.postLogout = function(req, res) {
@@ -19,7 +19,7 @@ exports.postRegister = function(req, res) {
 	});
 	User.register(userInstance, req.body.password, function(err, user) {
 		if (err) {
-			console.log('User could not be registered: '+err);
+			console.log('User could not be registered: ', err);
 			res.send('Error');
 		}
 		else {
