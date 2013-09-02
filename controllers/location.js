@@ -7,10 +7,9 @@ exports.post = function(req, res) {
 	var company = res.locals.content;
 	//test for duplicates - gross
 	var locationObject = company.locations.toObject();
-	for (i in locationObject) {
+	for (var i in locationObject) {
 		if (locationObject[i].name == req.params.location) {
 			console.log('Duplicate');
-			console.log(locationObject[i].name);
 			return res.status(406).send('Duplicate');
 		}
 	}
@@ -21,28 +20,30 @@ exports.post = function(req, res) {
 			return res.status(406).send(err);
 		}
 		else {
-			company.locations.push({name: req.params.location, inventory: inventory._id});
+			console.log('Inventory instance was successfully saved');
+			company.locations.push({name: req.params.location, inventory: inventoryInst._id, 
+				address: inventoryInst.address });
 			company.save(function(err, location) {
 				if (err) {
 					console.log('Error saving Location.', err);
 					return res.send(err);
 				}
 				else {
-					console.log('Saving:\n'+location);
+					console.log('Saved new location', req.params.location);
+					res.send('New location ' + req.params.location + ' saved.');
 				}
 			});
 		}
 	});
-
-  res.send('ok');
 };
 
 //company.get should be called before this
+//params.location refers to the location name
 exports.get = function(req, res, next) {
-	//optimize by not evaluating entire thing to JSON
-	var location_object = res.locals.content.locations.toObject();
+	var company = res.locals.content;
+	var location_object = company.locations.toObject();
 	//do linear search for location
-	for (loc_index in location_object) {
+	for (var loc_index in location_object) {
 		if (location_object[loc_index].name == req.params.location) {
 			//use locations.id(id) here instead
 			res.locals.content = res.locals.content.locations[loc_index];
@@ -80,7 +81,7 @@ exports.createItem = function (req, res, next) {
 	console.log(inventory);
 	//check for duplicate sku
 	var items = inventory.items.toObject();
-	for (i in items) {
+	for (var i in items) {
 		if(items[i].sku == req.params.itemSku) {
 			console.log('duplicate found');
 			return res.status(406).send('Duplicate');
@@ -105,17 +106,15 @@ exports.createItem = function (req, res, next) {
 };
 exports.deleteItem = function (req, res, next) {
 	var inventory = res.locals.content;
-/*	for (f in inventory.items) {
-		console.log(f);
-	}*/
 	var items = inventory.items.toObject();
-	for (i in items) {
+	var item;
+	for (var i in items) {
 		if (inventory.items[i].sku == req.params.itemSku) {
-			var item = inventory.items[i];
+			item = inventory.items[i];
 			console.log('item found: ', item);
 		}
 	}
- 	inventory.items.remove(item);
+	inventory.items.remove(item);
 	res.send(inventory.items);
 	inventory.save(function (err, inventory) {
 		if (err) {
@@ -127,7 +126,7 @@ exports.deleteItem = function (req, res, next) {
 			res.send('Saving complete');
 		}
 	});
-}
+};
 
 
 
