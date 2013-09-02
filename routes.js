@@ -14,9 +14,9 @@ module.exports = function(app, passport) {
 	var company = require('./controllers/company');
 	var location = require('./controllers/location');
 
-	app.get('/data/:company', company.get, send);
-	app.get('/data/:company/:location', company.get, location.get, send);
-	app.get('/data/:company/:location/inventory',
+	app.get('/api/:company', company.get, send);
+	app.get('/api/:company/:location', company.get, location.get, send);
+	app.get('/api/:company/:location/inventory',
 																			company.get,
 																			location.get,
 																			location.getInventory,
@@ -25,20 +25,20 @@ module.exports = function(app, passport) {
 	app.post('/logout', session.postLogout);
 	app.post('/login', passport.authenticate('local'), session.postLogin);
 	app.post('/register', session.postRegister); 
-	app.post('/data/:company/:location', company.get, location.post);
-	app.post('/data/:company/:location/inventory/:itemSku',
+	app.post('/api/:company/:location', company.get, location.post);
+	app.post('/api/:company/:location/inventory/:itemSku',
 																			company.get,
 																			location.get,
 																			location.getInventory,
 																			location.createItem);
 
-	app.delete('/data/:company/:location/inventory/:itemSku',
+	app.delete('/api/:company/:location/inventory/:itemSku',
 																			company.get,
 																			location.get,
 																			location.getInventory,
 																			location.deleteItem);
 																			//it should be inventory.deleteItem,
 																			//we know
-	app.delete('/data/:company/:location', company.get,
+	app.delete('/api/:company/:location', company.get,
 																			company.deleteLocation);
 };
