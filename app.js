@@ -24,8 +24,8 @@ var app = express();
 
 //Connect to Mongo
 var mongoUri = process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://localhost/test';
+	process.env.MONGOHQ_URL ||
+	'mongodb://localhost/test';
 mongoose.connect(mongoUri);
 
 //CORS middleware
@@ -53,12 +53,12 @@ app.use(allowCrossDomain);
 app.use(express.cookieParser(COOKIE_HASH));
 
 app.use(express.session({
-    store : new mongoStore({
-      url : mongoUri
-    }),
-    maxAge: 300000,
-    secret: COOKIE_HASH
-  })
+		store : new mongoStore({
+			url : mongoUri
+		}),
+		maxAge: 300000,
+		secret: COOKIE_HASH
+	})
 );
 
 // Turn on Passport
@@ -75,7 +75,7 @@ app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
 // add stuff to get /company/location/inventory/item
@@ -85,5 +85,5 @@ if ('development' == app.get('env')) {
 require('./routes')(app, passport);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });
