@@ -27,13 +27,13 @@ exports.get = function(req, res, next) {
 exports.deleteLocation = function (req, res, next) {
 	var company = res.locals.content;
 	var locations = company.locations.toObject();
-	for (i in locations) {
+	for (var i in locations) {
 		if (company.locations[i].name == req.params.location) {
 			var location = company.locations[i];
+			company.locations.remove(location);
 			console.log('location found: ', location);
 		}
 	}
- 	company.locations.remove(location);
 	res.send(company.locations);
 	company.save(function (err, company) {
 		if (err) {
@@ -45,4 +45,9 @@ exports.deleteLocation = function (req, res, next) {
 			res.send('Saving complete');
 		}
 	});
+};
+
+exports.update = function (req, res, next) {
+	var company = res.locals.content;
+	console.log('params: ', req.params);
 };
