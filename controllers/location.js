@@ -89,7 +89,7 @@ exports.createItem = function (req, res, next) {
 	}
 	//update sku
 	req.body.sku = req.params.itemSku;
-  inventory.items.push(req.body);
+	inventory.items.push(req.body);
 	console.log(inventory);
 
 	inventory.save(function (err, inventory) {
