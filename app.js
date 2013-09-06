@@ -17,7 +17,7 @@ var passport = require('passport');
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var mongoStore = require('connect-mongo')(express)
+var mongoStore = require('connect-mongo')(express);
 var LocalStrategy = require('passport-local').Strategy;
 var app = express();
 
@@ -28,17 +28,6 @@ var mongoUri = process.env.MONGOLAB_URI ||
 	'mongodb://localhost/test';
 mongoose.connect(mongoUri);
 
-//CORS middleware
-var allowCrossDomain = function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-	res.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
-	if (req.method == 'OPTIONS') {
-		res.send(200)
-	}
-
-	next();
-}
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -47,7 +36,6 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, '/static')));
-app.use(allowCrossDomain);
 
 // Session Cookies
 app.use(express.cookieParser(COOKIE_HASH));

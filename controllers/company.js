@@ -49,5 +49,18 @@ exports.deleteLocation = function (req, res, next) {
 
 exports.update = function (req, res, next) {
 	var company = res.locals.content;
-	console.log('params: ', req.params);
+	console.log('company: ', company);
+	console.log('body: ', req.body);
+	console.log('name: ', company.name);
+	var query = Company.findOne({_id: company._id});
+	company.update(query, {$set: {name: 'petshop'}}, function(err, company) {
+		if (err) {
+			console.log('Error in updating: ', err);
+			res.send('Saving Error');
+		} 
+		else {
+			console.log('company: ', company);
+			res.send('Successfully updated ' +  company.name);
+		}
+	});
 };
