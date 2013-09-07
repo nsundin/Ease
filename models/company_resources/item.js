@@ -3,10 +3,11 @@ var mongoose = require('mongoose');
 var itemSchema = new mongoose.Schema({
 	sku: Number,
 	name: String,
-	quantity: Number,
+	description: {type: String, default: ''},
+	quantity: {type: Number, default: 0},
 	purchasePrice: Number,
 	salesPrice: Number,
-	hasAlarm: Boolean,
+	hasAlarm: {type:  Boolean, default: false },
 	minQuantity: Number,
 	isDanger: Boolean
 

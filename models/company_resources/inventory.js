@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var inventorySchema = new mongoose.Schema({
 	items: [itemSchema],
-  name: String
+	name: String
 });
 
 mongoose.model('Inventory', inventorySchema);

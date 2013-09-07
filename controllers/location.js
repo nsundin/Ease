@@ -1,17 +1,17 @@
 var mongoose = require('mongoose');
+var _ = require('underscore');
 //model
 var Company = mongoose.model('Company');
 var Inventory = mongoose.model('Inventory');
 
 exports.post = function(req, res) {
 	var company = res.locals.content;
-	//test for duplicates - gross
-	var locationObject = company.locations.toObject();
-	for (var i in locationObject) {
-		if (locationObject[i].name == req.params.location) {
-			console.log('Duplicate');
-			return res.status(406).send('Duplicate');
-		}
+	var location = _.find(company.locations, function(location) {
+		return location == req.params.location;
+	});
+	if (location) {
+		console.log('Duplicate');
+		return res.status(406).send('Duplicate');
 	}
 	var inventoryInst = new Inventory({});
 	inventoryInst.save(function(err, inventory) {
@@ -21,8 +21,9 @@ exports.post = function(req, res) {
 		}
 		else {
 			console.log('Inventory instance was successfully saved');
-			company.locations.push({name: req.params.location, inventory: inventoryInst._id, 
-				address: inventoryInst.address });
+
+			_.extend(req.body, {inventory: inventoryInst._id, name: req.params.location});
+			company.locations.push(req.body);
 			company.save(function(err, location) {
 				if (err) {
 					console.log('Error saving Location.', err);

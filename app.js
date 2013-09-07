@@ -17,7 +17,7 @@ var passport = require('passport');
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var mongoStore = require('connect-mongo')(express)
+var mongoStore = require('connect-mongo')(express);
 var LocalStrategy = require('passport-local').Strategy;
 var app = express();
 
