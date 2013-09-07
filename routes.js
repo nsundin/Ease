@@ -47,8 +47,5 @@ module.exports = function(app, passport) {
 		location.get,
 		location.getInventory,
 		item.update);
-	/*
-	app.put('/api/company/:company/update',company.get, company.update);
-	app.post('/api/company/:company/:location', company.get, location.get, location.update);
-	*/
+	app.put('/api/company/:company/:location', company.get, company.updateLocation);
 };
