@@ -6,4 +6,5 @@ var contactSchema = new mongoose.Schema({
 	address: String, 
 });
 
+exports.contactSchema = contactSchema;
 mongoose.model('Contact', contactSchema);

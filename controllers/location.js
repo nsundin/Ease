@@ -22,7 +22,10 @@ exports.post = function(req, res) {
 		else {
 			console.log('Inventory instance was successfully saved');
 
-			_.extend(req.body, {inventory: inventoryInst._id, name: req.params.location});
+			_.extend(req.body, {
+				inventory: inventoryInst._id,
+				name: req.params.location
+			});
 			company.locations.push(req.body);
 			company.save(function(err, location) {
 				if (err) {
@@ -44,6 +47,8 @@ exports.get = function(req, res, next) {
 	var company = res.locals.content;
 	var location_object = company.locations.toObject();
 	//do linear search for location
+	//I'm not sure how to use _.js with this
+	console.log(company.locations);
 	for (var loc_index in location_object) {
 		if (location_object[loc_index].name == req.params.location) {
 			//use locations.id(id) here instead
@@ -109,12 +114,9 @@ exports.deleteItem = function (req, res, next) {
 	var inventory = res.locals.content;
 	var items = inventory.items.toObject();
 	var item;
-	for (var i in items) {
-		if (inventory.items[i].sku == req.params.itemSku) {
-			item = inventory.items[i];
-			console.log('item found: ', item);
-		}
-	}
+	item = _.find(inventory.items, function(item) {
+		return item == req.params.itemSku;
+	});
 	inventory.items.remove(item);
 	res.send(inventory.items);
 	inventory.save(function (err, inventory) {

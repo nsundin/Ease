@@ -2,17 +2,15 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	passportLocalMongoose = require('passport-local-mongoose'),
-	companyModel = mongoose.model('company'),
-	locationModel = mongoose.model('location'),
-	contact = mongoose.model('Contact');
+	contact = require('./contact.js').contactSchema;
 
 
 var userSchema = new Schema({
 	uid: Number,
-	company: companyModel,
+	companyId: String,
 	name: String,
-	location: locationModel,
-	contactInformation: contact
+	locationId: String,
+	contactInformation: [contact]
 	
 	
 });
