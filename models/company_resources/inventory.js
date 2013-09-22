@@ -3,6 +3,8 @@ var mongoose = require('mongoose'),
 
 var inventorySchema = new mongoose.Schema({
 	items: [itemSchema],
+	itemsOutOfStock: Number,
+	totalItems: Number,
 	name: String
 });
 
